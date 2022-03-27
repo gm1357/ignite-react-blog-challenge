@@ -1,0 +1,30 @@
+.content {
+  cursor: pointer;
+
+  h2 {
+    color: var(--heading);
+    margin-bottom: 0.5rem;
+    transition: 0.2s color;
+  }
+
+  .info {
+    color: var(--info);
+    margin-top: 1.6rem;
+
+    span {
+      * + * {
+        margin-left: 0.5rem;
+      }
+
+      & + span {
+        margin-left: 1.6rem;
+      }
+    }
+  }
+
+  &:hover {
+    h2 {
+      color: var(--highlight);
+    }
+  }
+}

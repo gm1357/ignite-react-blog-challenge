@@ -5,11 +5,5 @@
 }
 
 .content {
-  li {
-    list-style: none;
-
-    & + li {
-      margin-top: 3rem;
-    }
-  }
+  padding: 2.6rem 0;
 }
