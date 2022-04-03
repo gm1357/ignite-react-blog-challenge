@@ -1,6 +1,7 @@
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import Link from 'next/link';
 import styles from './styles.module.scss';
+import PostInfo from '../PostInfo';
 
 interface PostItemProps {
   post: {
@@ -16,22 +17,16 @@ interface PostItemProps {
 
 export default function PostItem({ post }: PostItemProps): JSX.Element {
   return (
-    <Link href={post.uid}>
+    <Link href={`/post/${post.uid}`}>
       <a>
         <div className={styles.content}>
           <h2>{post.data.title}</h2>
           <p>{post.data.subtitle}</p>
 
-          <div className={styles.info}>
-            <span>
-              <FiCalendar />
-              <time>{post.first_publication_date}</time>
-            </span>
-            <span>
-              <FiUser />
-              <span>{post.data.author}</span>
-            </span>
-          </div>
+          <PostInfo
+            publicationDate={post.first_publication_date}
+            author={post.data.author}
+          />
         </div>
       </a>
     </Link>

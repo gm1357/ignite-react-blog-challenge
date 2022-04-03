@@ -1,1 +1,40 @@
-// TODO
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  margin-top: 5rem;
+
+  header {
+    margin-bottom: 4rem;
+
+    h1 {
+      font-weight: bold;
+    }
+  }
+
+  a {
+    color: var(--highlight);
+    transition: filter 0.2s;
+
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+
+  section {
+    line-height: 140%;
+    text-align: justify;
+
+    h2 {
+      margin: 3rem 0;
+    }
+
+    * {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+.banner {
+  width: 100%;
+}

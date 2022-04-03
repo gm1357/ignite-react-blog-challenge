@@ -1,0 +1,14 @@
+.info {
+  color: var(--info);
+  margin-top: 1.6rem;
+
+  span {
+    * + * {
+      margin-left: 0.5rem;
+    }
+
+    & + span {
+      margin-left: 1.6rem;
+    }
+  }
+}
