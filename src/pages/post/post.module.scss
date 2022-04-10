@@ -38,3 +38,16 @@
 .banner {
   width: 100%;
 }
+
+
+.fallback {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+
+  span {
+    color: var(--highlight);
+    font-size: 2rem;
+  }
+}

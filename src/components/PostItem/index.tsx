@@ -1,4 +1,3 @@
-import { FiCalendar, FiUser } from 'react-icons/fi';
 import Link from 'next/link';
 import styles from './styles.module.scss';
 import PostInfo from '../PostInfo';

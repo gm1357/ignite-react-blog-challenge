@@ -1,14 +1,12 @@
 /* eslint-disable react/no-danger */
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { FiCalendar, FiUser } from 'react-icons/fi';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
-import { format } from 'date-fns';
+import { useRouter } from 'next/router';
 import Header from '../../components/Header';
 
 import { getPrismicClient } from '../../services/prismic';
 
-import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import PostInfo from '../../components/PostInfo';
 
@@ -34,39 +32,50 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps): JSX.Element {
+  const { isFallback } = useRouter();
+
   return (
     <>
       <Header />
 
-      <img
-        src={post.data.banner.url}
-        alt="Banner do post"
-        className={styles.banner}
-      />
-
-      <article className={styles.container}>
-        <header>
-          <h1>{post.data.title}</h1>
-
-          <PostInfo
-            author={post.data.author}
-            publicationDate={post.first_publication_date}
+      {!isFallback ? (
+        <div>
+          <img
+            src={post.data.banner.url}
+            alt="Banner do post"
+            className={styles.banner}
           />
-        </header>
 
-        <main>
-          {post.data.content.map(content => (
-            <section key={content.heading}>
-              <h2>{content.heading}</h2>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: RichText.asHtml(content.body),
-                }}
+          <article className={styles.container}>
+            <header>
+              <h1>{post.data.title}</h1>
+
+              <PostInfo
+                author={post.data.author}
+                publicationDate={post.first_publication_date}
+                showEstimate
               />
-            </section>
-          ))}
-        </main>
-      </article>
+            </header>
+
+            <main>
+              {post.data.content.map(content => (
+                <section key={content.heading}>
+                  <h2>{content.heading}</h2>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: RichText.asHtml(content.body),
+                    }}
+                  />
+                </section>
+              ))}
+            </main>
+          </article>
+        </div>
+      ) : (
+        <div className={styles.fallback}>
+          <span>Carregando...</span>
+        </div>
+      )}
     </>
   );
 }
@@ -80,8 +89,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
     }
   );
 
+  const paths = response.results.map(post => ({
+    params: {
+      slug: post.uid,
+    },
+  }));
+
   return {
-    paths: response.results.map(post => `/post/${post.uid}`),
+    paths,
     fallback: true,
   };
 };
@@ -94,12 +109,11 @@ export const getStaticProps: GetStaticProps = async context => {
   return {
     props: {
       post: {
-        first_publication_date: format(
-          new Date(response.last_publication_date),
-          'dd MMM yyyy'
-        ),
+        uid: response.uid,
+        first_publication_date: response.first_publication_date,
         data: {
           title: response.data.title,
+          subtitle: response.data.subtitle,
           banner: {
             url: response.data.banner.url,
           },
